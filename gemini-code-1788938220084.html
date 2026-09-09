@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>기억력 카드 뒤집기</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 70px); gap: 10px; justify-content: center; margin: 20px 0; }
+        .card-item { width: 70px; height: 70px; background: #334155; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h2>기억력 카드 뒤집기</h2>
+    <div class="grid" id="grid"></div>
+    <p id="status"></p>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let emojis = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍒', '🍒'];
+        emojis.sort(() => Math.random() - 0.5);
+        let grid = document.getElementById('grid');
+        let first = null, lock = false, score = 0;
+        emojis.forEach((em, idx) => {
+            let div = document.createElement('div');
+            div.className = 'card-item';
+            div.dataset.emoji = em;
+            div.onclick = () => {
+                if(lock || div.innerText !== '' || div === first) return;
+                div.innerText = em;
+                if(!first) { first = div; } 
+                else {
+                    if(first.dataset.emoji === div.dataset.emoji) {
+                        score++;
+                        first = null;
+                        if(score === 4) document.getElementById('status').innerText = "클리어!";
+                    } else {
+                        lock = true;
+                        setTimeout(() => { first.innerText = ''; div.innerText = ''; first = null; lock = false; }, 600);
+                    }
+                }
+            };
+            grid.appendChild(div);
+        });
+    </script>
+</body>
+</html>

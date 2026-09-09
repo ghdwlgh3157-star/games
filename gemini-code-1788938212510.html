@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>틱택토</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 30px; }
+        .board { display: grid; grid-template-columns: repeat(3, 80px); gap: 5px; justify-content: center; margin: 20px 0; }
+        .cell { width: 80px; height: 80px; background: #1e293b; font-size: 2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; color: #38bdf8; }
+    </style>
+</head>
+<body>
+    <h2>틱택토 (2인용)</h2>
+    <p id="turn">현재 차례: X</p>
+    <div class="board" id="board"></div>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let board = Array(9).fill('');
+        let turn = 'X', gameOver = false;
+        let boardDiv = document.getElementById('board');
+        
+        function render() {
+            boardDiv.innerHTML = '';
+            board.forEach((val, idx) => {
+                let cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = val;
+                cell.onclick = () => {
+                    if(val || gameOver) return;
+                    board[idx] = turn;
+                    if(checkWin()) {
+                        document.getElementById('turn').innerText = `${turn} 승리!`;
+                        gameOver = true;
+                    } else if(board.every(v => v)) {
+                        document.getElementById('turn').innerText = `무승부!`;
+                        gameOver = true;
+                    } else {
+                        turn = turn === 'X' ? 'O' : 'X';
+                        document.getElementById('turn').innerText = `현재 차례: ${turn}`;
+                    }
+                    render();
+                };
+                boardDiv.appendChild(cell);
+            });
+        }
+        function checkWin() {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return wins.some(([a,b,c]) => board[a] && board[a] === board[b] && board[a] === board[c]);
+        }
+        render();
+    </script>
+</body>
+</html>

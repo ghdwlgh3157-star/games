@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>타이밍 반응속도</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
+        #box { width: 300px; height: 200px; background: #ef4444; margin: 20px auto; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>타이밍 반응속도 테스트</h2>
+    <div id="box" onclick="clicked()">초록색이 되면 클릭하세요!</div>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let state = 'wait', start, timer;
+        let box = document.getElementById('box');
+        function init() {
+            box.style.background = '#ef4444';
+            box.innerText = "기다리세요...";
+            state = 'wait';
+            let time = Math.random() * 3000 + 2000;
+            timer = setTimeout(() => {
+                box.style.background = '#22c55e';
+                box.innerText = "지금 클릭!";
+                state = 'ready';
+                start = Date.now();
+            }, time);
+        }
+        function clicked() {
+            if(state === 'wait') {
+                clearTimeout(timer);
+                box.innerText = "너무 빨랐습니다! 다시 시작하려면 클릭";
+                state = 'end';
+            } else if(state === 'ready') {
+                let diff = Date.now() - start;
+                box.innerText = `반응속도: ${diff}ms! 다시 하려면 클릭`;
+                state = 'end';
+            } else { init(); }
+        }
+        init();
+    </script>
+</body>
+</html>
