@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <br>meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미니 아케이드 - 랜덤 게임 모음</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --hover-color: #0ea5e9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+        }
+        p {
+            color: #94a3b8;
+            margin: 0;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .game-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+        }
+        .game-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        .game-desc {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .play-btn {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .play-btn:hover {
+            background-color: var(--hover-color);
+        }
+        footer {
+            margin-top: auto;
+            padding: 20px 0;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mini Arcade</h1>
+        <p>클릭해서 바로 즐길 수 있는 6가지 웹 게임 모음</p>
+    </header>
+
+    <div class="grid-container">
+        <!-- 게임 1 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">숫자 맞추기</div>
+                <div class="game-desc">1부터 100 사이의 숫자를 제한된 기회 안에 맞추는 두뇌 추리 게임입니다.</div>
+            </div>
+            <a href="games/number-guess.html" class="play-btn">플레이하기</a>
+        </div>
+
+        <!-- 게임 2 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">가위바위보 마스터</div>
+                <div class="game-desc">AI와의 연승 대결! 빠르게 판단하고 연승 기록을 세워보세요.</div>
+            </div>
+            <a href="games/rps.html" class="play-btn">플레이하기</a>
+        </div>
+
+        <!-- 게임 3 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">타이밍 반응속도</div>
+                <div class="game-desc">초록색 신호가 떴을 때 화면을 가장 빠르게 클릭해 반사 신경을 테스트하세요.</div>
+            </div>
+            <a href="games/reaction.html" class="play-btn">플레이하기</a>
+        </div>
+
+        <!-- 게임 4 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">기억력 카드 뒤집기</div>
+                <div class="game-desc">카드의 위치를 기억하고 짝을 찾아내는 클래식 메모리 챌린지입니다.</div>
+            </div>
+            <a href="games/memory.html" class="play-btn">플레이하기</a>
+        </div>
+
+        <!-- 게임 5 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">up & down 주사위</div>
+                <div class="game-desc">주사위 합계를 예측하여 포인트를 획득하는 간단한 확률 게임입니다.</div>
+            </div>
+            <a href="games/dice.html" class="play-btn">플레이하기</a>
+        </div>
+
+        <!-- 게임 6 -->
+        <div class="game-card">
+            <div>
+                <div class="game-title">틱택토 (삼목)</div>
+                <div class="game-desc">친구와 함께 즐기는 추억의 3목 게임. 가로, 세로, 대각선 먼저 잇는 사람이 승리!</div>
+            </div>
+            <a href="games/tictactoe.html" class="play-btn">플레이하기</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Mini Arcade. Powered by GitHub Pages.
+    </footer>
+
+</body>
+</html>
