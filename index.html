@@ -1,163 +1,255 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <br>meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미니 아케이드 - 랜덤 게임 모음</title>
+    <meta charset="UTF-8">
+    <title>숫자 맞추기</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent-color: #38bdf8;
-            --hover-color: #0ea5e9;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.5rem;
-            color: var(--accent-color);
-        }
-        p {
-            color: #94a3b8;
-            margin: 0;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1000px;
-        }
-        .game-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
-        }
-        .game-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
-        .game-desc {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-        .play-btn {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
-        .play-btn:hover {
-            background-color: var(--hover-color);
-        }
-        footer {
-            margin-top: auto;
-            padding: 20px 0;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
+        .card { background: #1e293b; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 12px; }
+        input { padding: 10px; font-size: 1rem; width: 60%; margin-right: 10px; }
+        button { padding: 10px 15px; font-size: 1rem; background: #38bdf8; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>Mini Arcade</h1>
-        <p>클릭해서 바로 즐길 수 있는 6가지 웹 게임 모음</p>
-    </header>
-
-    <div class="grid-container">
-        <!-- 게임 1 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">숫자 맞추기</div>
-                <div class="game-desc">1부터 100 사이의 숫자를 제한된 기회 안에 맞추는 두뇌 추리 게임입니다.</div>
-            </div>
-            <a href="games/number-guess.html" class="play-btn">플레이하기</a>
-        </div>
-
-        <!-- 게임 2 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">가위바위보 마스터</div>
-                <div class="game-desc">AI와의 연승 대결! 빠르게 판단하고 연승 기록을 세워보세요.</div>
-            </div>
-            <a href="games/rps.html" class="play-btn">플레이하기</a>
-        </div>
-
-        <!-- 게임 3 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">타이밍 반응속도</div>
-                <div class="game-desc">초록색 신호가 떴을 때 화면을 가장 빠르게 클릭해 반사 신경을 테스트하세요.</div>
-            </div>
-            <a href="games/reaction.html" class="play-btn">플레이하기</a>
-        </div>
-
-        <!-- 게임 4 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">기억력 카드 뒤집기</div>
-                <div class="game-desc">카드의 위치를 기억하고 짝을 찾아내는 클래식 메모리 챌린지입니다.</div>
-            </div>
-            <a href="games/memory.html" class="play-btn">플레이하기</a>
-        </div>
-
-        <!-- 게임 5 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">up & down 주사위</div>
-                <div class="game-desc">주사위 합계를 예측하여 포인트를 획득하는 간단한 확률 게임입니다.</div>
-            </div>
-            <a href="games/dice.html" class="play-btn">플레이하기</a>
-        </div>
-
-        <!-- 게임 6 -->
-        <div class="game-card">
-            <div>
-                <div class="game-title">틱택토 (삼목)</div>
-                <div class="game-desc">친구와 함께 즐기는 추억의 3목 게임. 가로, 세로, 대각선 먼저 잇는 사람이 승리!</div>
-            </div>
-            <a href="games/tictactoe.html" class="play-btn">플레이하기</a>
-        </div>
+    <div class="card">
+        <h2>숫자 맞추기 (1~100)</h2>
+        <p id="msg">1부터 100 사이의 숫자를 맞춰보세요!</p>
+        <input type="number" id="guess" min="1" max="100">
+        <button onclick="check()">확인</button>
+        <p><a href="../index.html" style="color:#38bdf8; display:inline-block; margin-top:20px;">메인으로 돌아가기</a></p>
     </div>
-
-    <footer>
-        &copy; 2026 Mini Arcade. Powered by GitHub Pages.
-    </footer>
-
+    <script>
+        let ans = Math.floor(Math.random() * 100) + 1;
+        let count = 0;
+        function check() {
+            let val = Number(document.getElementById('guess').value);
+            count++;
+            let msg = document.getElementById('msg');
+            if(val === ans) msg.innerText = `정답입니다! 총 ${count}번 만에 맞췄어요!`;
+            else if(val > ans) msg.innerText = "더 낮은 숫자입니다!";
+            else msg.innerText = "더 높은 숫자입니다!";
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>타이밍 반응속도</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
+        #box { width: 300px; height: 200px; background: #ef4444; margin: 20px auto; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>타이밍 반응속도 테스트</h2>
+    <div id="box" onclick="clicked()">초록색이 되면 클릭하세요!</div>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let state = 'wait', start, timer;
+        let box = document.getElementById('box');
+        function init() {
+            box.style.background = '#ef4444';
+            box.innerText = "기다리세요...";
+            state = 'wait';
+            let time = Math.random() * 3000 + 2000;
+            timer = setTimeout(() => {
+                box.style.background = '#22c55e';
+                box.innerText = "지금 클릭!";
+                state = 'ready';
+                start = Date.now();
+            }, time);
+        }
+        function clicked() {
+            if(state === 'wait') {
+                clearTimeout(timer);
+                box.innerText = "너무 빨랐습니다! 다시 시작하려면 클릭";
+                state = 'end';
+            } else if(state === 'ready') {
+                let diff = Date.now() - start;
+                box.innerText = `반응속도: ${diff}ms! 다시 하려면 클릭`;
+                state = 'end';
+            } else { init(); }
+        }
+        init();
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>기억력 카드 뒤집기</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 70px); gap: 10px; justify-content: center; margin: 20px 0; }
+        .card-item { width: 70px; height: 70px; background: #334155; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h2>기억력 카드 뒤집기</h2>
+    <div class="grid" id="grid"></div>
+    <p id="status"></p>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let emojis = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍒', '🍒'];
+        emojis.sort(() => Math.random() - 0.5);
+        let grid = document.getElementById('grid');
+        let first = null, lock = false, score = 0;
+        emojis.forEach((em, idx) => {
+            let div = document.createElement('div');
+            div.className = 'card-item';
+            div.dataset.emoji = em;
+            div.onclick = () => {
+                if(lock || div.innerText !== '' || div === first) return;
+                div.innerText = em;
+                if(!first) { first = div; } 
+                else {
+                    if(first.dataset.emoji === div.dataset.emoji) {
+                        score++;
+                        first = null;
+                        if(score === 4) document.getElementById('status').innerText = "클리어!";
+                    } else {
+                        lock = true;
+                        setTimeout(() => { first.innerText = ''; div.innerText = ''; first = null; lock = false; }, 600);
+                    }
+                }
+            };
+            grid.appendChild(div);
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>기억력 카드 뒤집기</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 70px); gap: 10px; justify-content: center; margin: 20px 0; }
+        .card-item { width: 70px; height: 70px; background: #334155; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h2>기억력 카드 뒤집기</h2>
+    <div class="grid" id="grid"></div>
+    <p id="status"></p>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let emojis = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍒', '🍒'];
+        emojis.sort(() => Math.random() - 0.5);
+        let grid = document.getElementById('grid');
+        let first = null, lock = false, score = 0;
+        emojis.forEach((em, idx) => {
+            let div = document.createElement('div');
+            div.className = 'card-item';
+            div.dataset.emoji = em;
+            div.onclick = () => {
+                if(lock || div.innerText !== '' || div === first) return;
+                div.innerText = em;
+                if(!first) { first = div; } 
+                else {
+                    if(first.dataset.emoji === div.dataset.emoji) {
+                        score++;
+                        first = null;
+                        if(score === 4) document.getElementById('status').innerText = "클리어!";
+                    } else {
+                        lock = true;
+                        setTimeout(() => { first.innerText = ''; div.innerText = ''; first = null; lock = false; }, 600);
+                    }
+                }
+            };
+            grid.appendChild(div);
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>up & down 주사위</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
+        .card { background: #1e293b; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 12px; }
+        button { padding: 10px 15px; font-size: 1rem; margin: 5px; background: #38bdf8; border: none; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>주사위 합계 예측 (2~12)</h2>
+        <p id="res">7보다 클까, 작을까?</p>
+        <button onclick="play('up')">UP (8 이상)</button>
+        <button onclick="play('mid')">MID (딱 7)</button>
+        <button onclick="play('down')">DOWN (6 이하)</button>
+        <p><a href="../index.html" style="color:#38bdf8; display:inline-block; margin-top:20px;">메인으로 돌아가기</a></p>
+    </div>
+    <script>
+        function play(type) {
+            let d1 = Math.floor(Math.random() * 6) + 1;
+            let d2 = Math.floor(Math.random() * 6) + 1;
+            let sum = d1 + d2;
+            let win = false;
+            if(type === 'up' && sum >= 8) win = true;
+            if(type === 'mid' && sum === 7) win = true;
+            if(type === 'down' && sum <= 6) win = true;
+            document.getElementById('res').innerText = `주사위: ${d1}, ${d2} (합계: ${sum}) -> ${win ? '정답!' : '오답!'}`;
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>틱택토</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 30px; }
+        .board { display: grid; grid-template-columns: repeat(3, 80px); gap: 5px; justify-content: center; margin: 20px 0; }
+        .cell { width: 80px; height: 80px; background: #1e293b; font-size: 2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; color: #38bdf8; }
+    </style>
+</head>
+<body>
+    <h2>틱택토 (2인용)</h2>
+    <p id="turn">현재 차례: X</p>
+    <div class="board" id="board"></div>
+    <p><a href="../index.html" style="color:#38bdf8;">메인으로 돌아가기</a></p>
+    <script>
+        let board = Array(9).fill('');
+        let turn = 'X', gameOver = false;
+        let boardDiv = document.getElementById('board');
+        
+        function render() {
+            boardDiv.innerHTML = '';
+            board.forEach((val, idx) => {
+                let cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = val;
+                cell.onclick = () => {
+                    if(val || gameOver) return;
+                    board[idx] = turn;
+                    if(checkWin()) {
+                        document.getElementById('turn').innerText = `${turn} 승리!`;
+                        gameOver = true;
+                    } else if(board.every(v => v)) {
+                        document.getElementById('turn').innerText = `무승부!`;
+                        gameOver = true;
+                    } else {
+                        turn = turn === 'X' ? 'O' : 'X';
+                        document.getElementById('turn').innerText = `현재 차례: ${turn}`;
+                    }
+                    render();
+                };
+                boardDiv.appendChild(cell);
+            });
+        }
+        function checkWin() {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return wins.some(([a,b,c]) => board[a] && board[a] === board[b] && board[a] === board[c]);
+        }
+        render();
+    </script>
 </body>
 </html>
