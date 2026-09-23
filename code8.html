@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>포격 슈팅 게임 (Gunny/Fortress 스타일)</title>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a1a;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 { margin-bottom: 10px; font-size: 24px; }
+        canvas {
+            border: 3px solid #fff;
+            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .ui-panel {
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+            background: #333;
+            padding: 15px 25px;
+            border-radius: 10px;
+            align-items: center;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+        }
+        input[type=range] { width: 120px; cursor: pointer; }
+        button {
+            padding: 10px 20px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #ff6b81; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+        .status-text { font-size: 16px; font-weight: bold; color: #ffd700; }
+    </style>
+</head>
+<body>
+
+    <h1>💥 턴제 포격 슈팅 게임 💥</h1>
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+
+    <div class="ui-panel">
+        <div class="status-text" id="turnIndicator">플레이어 1 턴</div>
+        
+        <div class="control-group">
+            <label for="angleRange">발사각: <span id="angleVal">45</span>°</label>
+            <input type="range" id="angleRange" min="0" max="90" value="45">
+        </div>
+
+        <div class="control-group">
+            <label for="powerRange">파워: <span id="powerVal">50</span></label>
+            <input type="range" id="powerRange" min="10" max="100" value="50">
+        </div>
+
+        <button id="fireBtn" onclick="fireProjectile()">발사!</button>
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 게임 상태 변수
+    let turn = 1; // 1: 플레이어 1, 2: 플레이어 2
+    let isAnimating = false;
+    let wind = Math.floor(Math.random() * 7) - 3; // -3 ~ 3 사이의 바람
+
+    // 플레이어 객체
+    const p1 = { x: 100, y: 0, hp: 100, color: '#ff4757', width: 30, height: 15 };
+    const p2 = { x: 700, y: 0, hp: 100, color: '#2ed573', width: 30, height: 15 };
+
+    // 지형 높낮이 배열 (간단한 언덕 구현)
+    const terrain = [];
+    function initTerrain() {
+        for (let i = 0; i <= canvas.width; i++) {
+            // 사인을 이용해 부드러운 언덕 생성
+            terrain[i] = 300 + Math.sin(i * 0.01) * 40 + Math.cos(i * 0.005) * 30;
+        }
+        p1.y = terrain[p1.x] - p1.height;
+        p2.y = terrain[p2.x] - p2.height;
+    }
+
+    // UI 요소 연동
+    const angleRange = document.getElementById('angleRange');
+    const powerRange = document.getElementById('powerRange');
+    const angleVal = document.getElementById('angleVal');
+    const powerVal = document.getElementById('powerVal');
+    const turnIndicator = document.getElementById('turnIndicator');
+    const fireBtn = document.getElementById('fireBtn');
+
+    angleRange.addEventListener('input', () => angleVal.innerText = angleRange.value);
+    powerRange.addEventListener('input', () => powerVal.innerText = powerRange.value);
+
+    function draw() {
+        // 화면 지우기
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. 지형 그리기
+        ctx.fillStyle = '#2f3542';
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        for (let i = 0; i <= canvas.width; i++) {
+            ctx.lineTo(i, terrain[i]);
+        }
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.fill();
+
+        // 2. 플레이어 1 탱크 그리기
+        ctx.fillStyle = p1.color;
+        ctx.fillRect(p1.x - p1.width/2, p1.y, p1.width, p1.height);
+        // 체력바
+        drawHpBar(p1.x, p1.y - 15, p1.hp);
+
+        // 3. 플레이어 2 탱크 그리기
+        ctx.fillStyle = p2.color;
+        ctx.fillRect(p2.x - p2.width/2, p2.y, p2.width, p2.height);
+        // 체력바
+        drawHpBar(p2.x, p2.y - 15, p2.hp);
+
+        // 4. 바람 정보 표시
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText(`바람: ${wind > 0 ? '➡️ +' + wind : wind < 0 ? '⬅️ ' + wind : ' ➖ 0'}`, 20, 30);
+    }
+
+    function drawHpBar(x, y, hp) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(x - 20, y, 40, 5);
+        ctx.fillStyle = 'limegreen';
+        ctx.fillRect(x - 20, y, 40 * (hp / 100), 5);
+    }
+
+    // 포탄 발사 로직
+    function fireProjectile() {
+        if (isAnimating) return;
+        isAnimating = true;
+        fireBtn.disabled = true;
+
+        const shooter = turn === 1 ? p1 : p2;
+        const target = turn === 1 ? p2 : p1;
+        
+        // 각도와 파워 가져오기 (플레이어 2는 왼쪽으로 쏘므로 각도 반전)
+        let angle = parseInt(angleRange.value);
+        if (turn === 2) angle = 180 - angle;
+        
+        const power = parseInt(powerRange.value) * 0.15; // 속도 스케일 조절
+
+        const rad = angle * Math.PI / 180;
+        let bx = shooter.x;
+        let by = shooter.y;
+        let bvx = Math.cos(rad) * power * (turn === 1 ? 1 : -1);
+        let bvy = -Math.sin(rad) * power;
+
+        // 포탄 이동 애니메이션 루프
+        function updateBullet() {
+            bvy += 0.2; // 중력
+            bvx += wind * 0.01; // 바람 영향
+            bx += bvx;
+            by += bvy;
+
+            // 화면 밖으로 나가면 턴 종료
+            if (bx < 0 || bx > canvas.width || by > canvas.height) {
+                endTurn();
+                return;
+            }
+
+            // 지형 충돌 체크
+            if (by >= terrain[Math.floor(bx)]) {
+                checkHit(bx, by);
+                return;
+            }
+
+            // 포탄 그려주기
+            draw();
+            ctx.fillStyle = '#ff9f43';
+            ctx.beginPath();
+            ctx.arc(bx, by, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            requestAnimationFrame(updateBullet);
+        }
+
+        updateBullet();
+    }
+
+    // 피격 판정 및 지형 파괴
+    function checkHit(x, y) {
+        // 폭발 반경 내 탱크 피격 확인
+        const target = turn === 1 ? p2 : p1;
+        const dist = Math.hypot(x - target.x, y - target.y);
+
+        if (dist < 30) {
+            target.hp -= 40;
+            if (target.hp < 0) target.hp = 0;
+        }
+
+        // 지형 파괴 (웅덩이 만들기)
+        for (let i = Math.max(0, Math.floor(x - 20)); i <= Math.min(canvas.width, Math.floor(x + 20)); i++) {
+            let crater = Math.sqrt(20*20 - (i - x)*(20 - (i - x))) * 0.5;
+            if (!isNaN(crater)) {
+                terrain[i] = Math.min(canvas.height - 20, terrain[i] + crater);
+            }
+        }
+
+        // 지형 변화에 따른 탱크 위치 재조정
+        p1.y = terrain[p1.x] - p1.height;
+        p2.y = terrain[p2.x] - p2.height;
+
+        draw();
+        checkWinCondition();
+    }
+
+    // 승리 조건 확인
+    function checkWinCondition() {
+        if (p1.hp <= 0 || p2.hp <= 0) {
+            alert(p1.hp <= 0 ? "플레이어 2 승리!" : "플레이어 1 승리!");
+            location.reload();
+            return;
+        }
+        endTurn();
+    }
+
+    // 턴 교체
+    function endTurn() {
+        turn = turn === 1 ? 2 : 1;
+        turnIndicator.innerText = `플레이어 ${turn} 턴`;
+        wind = Math.floor(Math.random() * 7) - 3; // 바람 랜덤 변경
+        isAnimating = false;
+        fireBtn.disabled = false;
+        draw();
+    }
+
+    // 초기 실행
+    initTerrain();
+    draw();
+</script>
+
+</body>
+</html>
